@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<%- include("./partials/header") %>
+<body>
+<a href="/" class="shadow-none p-3 mb-5 bg-body-tertiary rounded">Go Back</a>
+<center><h3>Welcome to Fasbullah Register System!</h3></center>
+<div class="container mt-4">
+    <div class="card m-auto" style="width: 50%">
+        <div class="card-header">
+            Form Register
+        </div>
+        <div class="card-body">
+            <form action="" method="post" autocomplete="off">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="ex: javascript" name="name">
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="ex: javascript@example.com" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="ex: password123"
+                           name="password">
+                </div>
+                <button type="submit" class="btn btn-outline-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include("./partials/footer") %>
+</body>
+</html>
+
