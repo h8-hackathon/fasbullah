@@ -15,7 +15,7 @@ app.use(session({
     cookie: {secure: false, sameSite: true}
 }))
 
-app.use(router)
+// app.use(router)
 
 app.get('/login', (req, res) => {
     res.render('user/login')
@@ -47,6 +47,10 @@ app.get('/profile/:id/friends', (req, res) => {
 
 app.get('/profile/:id/edit', (req, res) => {
     res.render('profile/edit-form')
+})
+
+app.get('/tags/tag', (req, res) => {
+    res.render('profile/tags')
 })
 
 
