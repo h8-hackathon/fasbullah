@@ -52,7 +52,6 @@ class ProfileController {
       })
   }
 
-
   static friends(req, res) {
     const { id } = req.params
     User.findByPk(id, {
@@ -78,7 +77,43 @@ class ProfileController {
   }
 
   static friendsRequest(req, res) {
+    const { id } = req.params
+    User.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'Requester',
+          through: { where: { isConfimed: false } },
+        },
+        {
+          model: User,
+          as: 'Requested',
+          through: { where: { isConfimed: false } },
+        },
+      ],
+    })
+      .then((user) => {
+        res.send(user)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+  }
 
+  static profileAddFriend(req, res) {
+    const { id } = req.params
+    const { user } = req.session
+    Friendship.create({
+      RequesterId: user.id,
+      RequestedId: id,
+      isConfimed: false,
+    })
+      .then(() => {
+        res.redirect(`/profile/${id}`)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
   }
 }
 
