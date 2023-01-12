@@ -6,48 +6,27 @@
     <center><h3>Timeline</h3></center>
     <hr>
         <div class="col">
-            <% posts.forEach(post => { %>
-              <div class="mt-4">
-                <div class="card" style="max-height: 50vh;">
-                  <div class="card-body">
-                    <p class=""><%= post.post %></p>
-                  </div>
-                  <% if(post.imageURL) { %>
-                    <div style="height: 25vh;">
-                      <img src="<%= post.imageURL %>" class="card-img-bottom" alt="...">
+            <center>
+                <% posts.forEach(post => { %>
+                    <div class="col-md-4 mt-4">
+                      <div class="card" style="width: 23rem">
+                        <div class="card-body">
+                            <img src="<%= post.User.profilePicture %> " class="card-img-profile" alt="..." style="width: 50px">
+                            <a href="/profile/<%= post.User.id %>">
+                                <span><%= post.User.name %> </span>
+                            </a>
+                          <p class=""><%= post.post %></p>
+                        </div>
+                        <% if(post.imageURL) { %>
+                            <div class="card" style="width: 22rem">
+                                <img src="<%= post.imageURL %>" class="card-img-bottom" alt="...">
+                            </div>
+                        <% } %>
+                        
+                      </div>
                     </div>
-                  <% } %> 
-                  <!-- post.post is caption for the image -->
-                  
-                    
-                </div>
-              </div>
-            <% }) %> 
-            <div class="col-md-4 mt-4">
-                <div class="card" style="width: 24rem;">
-                    <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Coding Yaar</h5>
-                      <p class="card-text">Buat comment</p>
-                      <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-profile" alt="...">
-                      <a href="#" class="btn btn-primary">Name User</a>
-                      <a href="#" class="btn btn-primary">Comment</a>
-                      <a href="/profile/:id/edit" class="btn btn-primary">Edit</a>
-                    </div>
-                  </div>
-            </div>
-            <div class="col-md-4 mt-4">
-                <div class="card" style="width: 24rem;">
-                    <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Coding Yaar</h5>
-                      <p class="card-text">Buat comment</p>
-                      <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-profile" alt="...">
-                      <a href="#" class="btn btn-primary">Name User</a>
-                      <a href="#" class="btn btn-primary">Comment</a>
-                    </div>
-                  </div>
-            </div>
+                  <% }) %> 
+            </center>
         </div>
         <%- include('../partials/footer') %> 
 </body>
