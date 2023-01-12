@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 const { timeSince } = require('../helpers');
+const { Op } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
     /**
@@ -21,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       return timeSince(this.createdAt)
     }
 
-    static getTimeLinePosts(otherUserIds, offset, limit) {
+    static getTimeLinePosts(otherUserIds, offset, limit, User) {
       return this.findAll({
         where: {
           UserId: {
