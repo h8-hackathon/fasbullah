@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { timeSince } = require('../helpers');
 module.exports = (sequelize, DataTypes) => {
   class Post extends Model {
     /**
@@ -14,6 +15,24 @@ module.exports = (sequelize, DataTypes) => {
       Post.belongsTo(models.User)
       Post.hasMany(models.Comment)
       Post.hasMany(models.PostTags)
+    }
+
+    get timeSincePost() {
+      return timeSince(this.createdAt)
+    }
+
+    static getTimeLinePosts(otherUserIds, offset, limit) {
+      return this.findAll({
+        where: {
+          UserId: {
+            [Op.in]: otherUserIds,
+          },
+        },
+        include: User,
+        order: [['createdAt', 'DESC']],
+        offset,
+        limit,
+      })
     }
   }
   Post.init({
