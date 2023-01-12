@@ -3,16 +3,18 @@ const { Op } = require('sequelize')
 
 class HomeController {
   static home(req, res) {
-    const page = req.query.page || 0
     if (!req.session.loggedIn) {
       res.redirect('/login')
       return
     }
+    
+    const page = req.query.page || 0 // /?page=1
+    
+    const postPerPage = 10
 
-    const offset = +page * 10;
-    const limit = 10;
+    const offset = +page * postPerPage;
+    const limit = postPerPage;
 
-    console.log(req.session)
     const { user, role } = req.session
     const { id } = user
 
@@ -33,17 +35,7 @@ class HomeController {
           }
         })
         
-        return Post.findAll({
-          where: {
-            UserId: {
-              [Op.in]: otherUserIds,
-            },
-          },
-          include: User,
-          order: [['createdAt', 'DESC']],
-          offset,
-          limit,
-        })
+        return Post.getTimeLinePosts(otherUserIds, offset, limit)
       })
       .then((posts) => {
         res.render('post/post', { user, role, posts })

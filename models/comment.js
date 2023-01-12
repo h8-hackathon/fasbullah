@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+const { timeSince } = require('../helpers');
 module.exports = (sequelize, DataTypes) => {
   class Comment extends Model {
     /**
@@ -13,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Comment.belongsTo(models.User)
       Comment.belongsTo(models.Post)
+    }
+
+    getTimeSince() {
+      return timeSince(this.createdAt)
     }
   }
   Comment.init({

@@ -2,6 +2,12 @@ const { isValidPassword } = require('../helpers')
 const { Credential, User } = require('../models')
 
 class AuthController {
+
+  static logout(req, res) {
+    req.session.destroy()
+    res.redirect('/login')
+  }
+
   static loginForm(req, res) {
     if(req.session.loggedIn) return res.redirect('/')
     res.render('user/login')
