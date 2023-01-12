@@ -8,6 +8,8 @@ router.get('/', ProfileController.profile)
 
 router.get('/:id', ProfileController.profileDetail)
 
+router.get('/:id/add', ProfileController.profileAddFriend)
+
 router.get('/:id/edit', ProfileController.profileEditForm)
 router.post('/:id/edit', ProfileController.profileEdit)
 
