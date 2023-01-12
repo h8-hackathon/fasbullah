@@ -15,7 +15,11 @@ app.use(session({
     cookie: {secure: false, sameSite: true}
 }))
 
-app.use(router)
+// app.use(router)
+
+app.get('/landing', (req, res) => {
+    res.render('user/landingPage')
+})
 
 app.get('/login', (req, res) => {
     res.render('user/login')
