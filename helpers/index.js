@@ -5,4 +5,12 @@ const isValidPassword = (userInput, hash) => {
   return bcrypt.compare(userInput, hash)
 }
 
-module.exports = { isValidPassword }
+const tagsGetter = (tags) => {
+  return tags
+    .split('\n')
+    .flatMap((tag) => tag.split(' '))
+    .filter((tag) => tag[0] === '#')
+    .map((tag) => tag.slice(1).toLowerCase())
+}
+
+module.exports = { isValidPassword, tagsGetter }
