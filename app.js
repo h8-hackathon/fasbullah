@@ -23,5 +23,14 @@ app.get('/post', (req, res) => {
     res.render('post/post')
 })
 
+app.get('/profile/:id', (req, res) => [
+    res.render('profile/userProfile')
+])
+
+app.get('/profile/:id/edit', (req, res) => {
+    res.render('profile/edit-form')
+})
+
+
 app.listen(PORT)
 
