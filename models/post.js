@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Post.belongsTo(models.User)
       Post.hasMany(models.Comment)
-      Post.hasMany(models.PostTags)
+      Post.belongsToMany(models.Tag, { through: models.PostTags })
     }
 
     get timeSincePost() {

@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Post)
       User.hasMany(models.Friendship)
+      User.belongsToMany(models.User, { through: models.Friendship, as: 'Requester', foreignKey: 'RequesterId' })
+      User.belongsToMany(models.User, { through: models.Friendship, as: 'Requested', foreignKey: 'RequestedId' })
       User.hasMany(models.Comment)
       User.hasOne(models.Credential)
     }

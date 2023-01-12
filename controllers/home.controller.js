@@ -4,7 +4,7 @@ const { Op } = require('sequelize')
 class HomeController {
   static home(req, res) {
     if (!req.session.loggedIn) {
-      res.redirect('/login')
+      res.render('user/landingPage')
       return
     }
     
