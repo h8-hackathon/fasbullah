@@ -69,12 +69,24 @@ class PostController {
   }
 
   static postEditForm(req, res) {
-    const { id } = req.params
     res.send('edit post form')
   }
 
   static postEdit(req, res) {
-    res.send('edit post')
+    const { post, imageURL } = req.body
+    const { id } = req.params
+
+    Post.findByPk(id)
+      .then((postResult) => {
+        return postResult.update({ post, imageURL })
+      })
+      .then(() => {
+        res.redirect(`/post/${id}`)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+
   }
 }
 

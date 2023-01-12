@@ -1,4 +1,4 @@
-const { User, Post } = require('../models')
+const { User, Post, Friendship } = require('../models')
 
 class ProfileController {
   static profile(req, res) {
@@ -12,7 +12,7 @@ class ProfileController {
       include: Post,
     })
       .then((user) => {
-        res.send({ user, self: user.id === id })
+        res.send({ user, self: user.id === +id })
       })
       .catch((err) => {
         res.status(500).send(err)
@@ -50,6 +50,35 @@ class ProfileController {
       .catch((err) => {
         res.status(500).send(err)
       })
+  }
+
+
+  static friends(req, res) {
+    const { id } = req.params
+    User.findByPk(id, {
+      include: [
+        {
+          model: User,
+          as: 'Requester',
+          through: { where: { isConfimed: true } },
+        },
+        {
+          model: User,
+          as: 'Requested',
+          through: { where: { isConfimed: true } },
+        },
+      ],
+    })
+      .then((user) => {
+        res.send(user)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+  }
+
+  static friendsRequest(req, res) {
+
   }
 }
 
