@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 const { User, Post, Friendship } = require('../models')
 
 class ProfileController {
@@ -12,7 +13,7 @@ class ProfileController {
       include: Post,
     })
       .then((user) => {
-        res.send({ user, self: user.id === +id })
+        res.render('profile/userProfile', { user, self: req.session.user.id == id })
       })
       .catch((err) => {
         res.status(500).send(err)
@@ -54,48 +55,75 @@ class ProfileController {
 
   static friends(req, res) {
     const { id } = req.params
-    User.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: 'Requester',
-          through: { where: { isConfimed: true } },
-        },
-        {
-          model: User,
-          as: 'Requested',
-          through: { where: { isConfimed: true } },
-        },
-      ],
+    Friendship.findAll({
+      where: {
+        [Op.or]: [{ RequesterId: id }, { RequestedId: id }],
+        isConfirmed: true,
+      },
+      attributes: ['RequesterId', 'RequestedId'],
     })
-      .then((user) => {
-        res.send(user)
+      .then((friends) => {
+        const friendsId = friends.map((friend) => {
+          if (friend.RequesterId === +id) {
+            return friend.RequestedId
+          } else {
+            return friend.RequesterId
+          }
+        })
+
+        return User.findAll({
+          where: {
+            id: {
+              [Op.in]: friendsId,
+            },
+          },
+        })
+      })
+      .then((friends) => {
+        res.send(friends)
       })
       .catch((err) => {
+        console.log(err)
         res.status(500).send(err)
       })
   }
 
   static friendsRequest(req, res) {
     const { id } = req.params
-    User.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: 'Requester',
-          through: { where: { isConfimed: false } },
-        },
-        {
-          model: User,
-          as: 'Requested',
-          through: { where: { isConfimed: false } },
-        },
-      ],
+    if(req.session.user.id !== +id) {
+      res.redirect(401, '/profile/' + id)
+      return
+    }
+
+    Friendship.findAll({
+      where: {
+        RequestedId: id,
+        isConfirmed: false,
+      },
+      attributes: ['RequesterId', 'RequestedId'],
     })
-      .then((user) => {
-        res.send(user)
+      .then((friends) => {
+        const friendsId = friends.map((friend) => {
+          if (friend.RequesterId === +id) {
+            return friend.RequestedId
+          } else {
+            return friend.RequesterId
+          }
+        })
+
+        return User.findAll({
+          where: {
+            id: {
+              [Op.in]: friendsId,
+            },
+          },
+        })
+      })
+      .then((friends) => {
+        res.send(friends)
       })
       .catch((err) => {
+        console.log(err)
         res.status(500).send(err)
       })
   }
@@ -121,6 +149,61 @@ class ProfileController {
         res.status(500).send(err)
       })
   }
+
+  static friendsRemove(req, res) {
+    const { id, friendsId } = req.params
+    Friendship.destroy({
+      where: {
+        [Op.or]: [
+          { RequesterId: id, RequestedId: friendsId },
+          { RequesterId: friendsId, RequestedId: id },
+        ],
+      },
+    })
+      .then(() => {
+        res.redirect(`/profile/${friendsId}`)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+  }
+
+  static friendsRequestAccept(req, res) {
+    const { id, friendsId } = req.params
+    Friendship.update(
+      { isConfirmed: true },
+      {
+        where: {
+          RequesterId: friendsId,
+          RequestedId: +id,
+        },
+      }
+    )
+      .then(() => {
+        res.redirect(`/profile/${friendsId}/friends/request`)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+    }
+
+   
+    static friendsRequestReject(req, res) {
+      const { id, friendsId } = req.params
+      Friendship.destroy({
+        where: {
+          RequesterId: friendsId,
+          RequestedId: +id,
+        },
+      })
+        .then(() => {
+          res.redirect(`/profile/${friendsId}/friends/request`)
+        })
+        .catch((err) => {
+          res.status(500).send(err)
+        })
+    }
+
 }
 
 module.exports = ProfileController

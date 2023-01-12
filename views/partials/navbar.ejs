@@ -5,13 +5,13 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/profile/:id">User<span class="sr-only"></span></a>
+            <a class="nav-item nav-link active" href="/profile/<%= user.id %>"><%= user.name %> <span class="sr-only"></span></a>
         </div>
         <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/profile/:id/friends">Friend<span class="sr-only"></span></a>
+            <a class="nav-item nav-link active" href="/profile/<%= user.id %>/friends">Friend<span class="sr-only"></span></a>
         </div>
         <div class="navbar-nav">
-            <a class="nav-item nav-link active" href="/post/add">New Post<span class="sr-only"></span></a>
+            <a class="nav-item nav-link active" href="/post/new">New Post<span class="sr-only"></span></a>
         </div>
     </div>
     <form action="" method="get" autocomplete="off">
