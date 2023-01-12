@@ -112,6 +112,12 @@ class ProfileController {
         res.redirect(`/profile/${id}`)
       })
       .catch((err) => {
+        if (err.name && err.errors) {
+          res.redirect(
+            `/profile/${id}?errors=${err.errors.map(({ message }) => message)}`
+          )
+          return
+        }
         res.status(500).send(err)
       })
   }
