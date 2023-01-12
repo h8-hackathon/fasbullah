@@ -2,7 +2,7 @@
 <html lang="en">
 <%- include('../partials/header', {title: "Profile"}) %> 
 <body>
-<%- include('../partials/navbar', { user }) %> 
+<%- include('../partials/navbar', { user: currentUser }) %> 
 <div class="container mt-3 mb-3">
 <center><h3>Profile User</h3></center>
 <hr>
@@ -19,9 +19,22 @@
         <% if(self) { %>
 
           <button class="btn">Edit Profile</button>
+        <%} else if(status === 'need-accept') { %>
+          <a href="/profile/<%= user.id %>/accept">
+            <button class="btn">accept friend request</button>
+          </a>
+        <%} else if(status === 'pending') { %>
+          <a href="/profile/<%= user.id %>/cancel">
+            <button class="btn">Cancel request</button>
+          </a>
+        <%} else if(status === 'friend') { %>
+          <a href="/profile/<%= user.id %>/remove">
+            <button class="btn">Remove Friend</button>
+          </a>
         <%} else { %>
-
-          <button class="btn">Add Friend</button>
+          <a href="/profile/<%= user.id %>/add">
+            <button class="btn">Add Friend</button>
+          </a>
         <% }%> 
           </div>
         <div>

@@ -4,16 +4,51 @@ const { User, Post, Friendship } = require('../models')
 class ProfileController {
   static profile(req, res) {
     const id = req.session.user.id
-    res.redirect(`/profile/${id}`)
-  }
+    const { search } = req.query
+    if (!search) return res.redirect(`/profile/${id}`)
 
+    User.findAll({
+      where: {
+        name: { [Op.iLike]: `%${search}%` },
+        id: { [Op.ne]: id },
+      },
+    })
+      .then((users) => {
+        // return res.send(users)
+        res.render('profile/searchResult', {
+          users,
+          currentUser: req.session.user,
+        })
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+  }
   static profileDetail(req, res) {
     const { id } = req.params
+
+    const self = req.session.user.id == id
+    let data = {}
     User.findByPk(id, {
       include: Post,
     })
       .then((user) => {
-        res.render('profile/userProfile', { user, self: req.session.user.id == id })
+        if (self)
+          return res.render('profile/userProfile', {
+            user,
+            currentUser: req.session.user,
+            self,
+          })
+        data = user
+        return Friendship.isMyFriend(req.session.user.id, id)
+      })
+      .then((status) => {
+        res.render('profile/userProfile', {
+          user: data,
+          currentUser: req.session.user,
+          self,
+          status,
+        })
       })
       .catch((err) => {
         res.status(500).send(err)
@@ -90,7 +125,7 @@ class ProfileController {
 
   static friendsRequest(req, res) {
     const { id } = req.params
-    if(req.session.user.id !== +id) {
+    if (req.session.user.id !== +id) {
       res.redirect(401, '/profile/' + id)
       return
     }
@@ -131,15 +166,21 @@ class ProfileController {
   static profileAddFriend(req, res) {
     const { id } = req.params
     const { user } = req.session
-    Friendship.create({
-      RequesterId: user.id,
-      RequestedId: id,
-      isConfimed: false,
-    })
+    Friendship.create(
+      {
+        RequesterId: user.id,
+        RequestedId: id,
+        isConfimed: false,
+      },
+      {
+        returning: false,
+      }
+    )
       .then(() => {
         res.redirect(`/profile/${id}`)
       })
       .catch((err) => {
+        console.log(err)
         if (err.name && err.errors) {
           res.redirect(
             `/profile/${id}?errors=${err.errors.map(({ message }) => message)}`
@@ -151,7 +192,9 @@ class ProfileController {
   }
 
   static friendsRemove(req, res) {
-    const { id, friendsId } = req.params
+    const friendsId = req.params.id
+    const { id } = req.session.user
+
     Friendship.destroy({
       where: {
         [Op.or]: [
@@ -169,7 +212,9 @@ class ProfileController {
   }
 
   static friendsRequestAccept(req, res) {
-    const { id, friendsId } = req.params
+    const friendsId = req.params.id
+    const { id } = req.session.user
+
     Friendship.update(
       { isConfirmed: true },
       {
@@ -180,30 +225,30 @@ class ProfileController {
       }
     )
       .then(() => {
-        res.redirect(`/profile/${friendsId}/friends/request`)
+        res.redirect(`/profile/${friendsId}`)
       })
       .catch((err) => {
         res.status(500).send(err)
       })
-    }
+  }
 
-   
-    static friendsRequestReject(req, res) {
-      const { id, friendsId } = req.params
-      Friendship.destroy({
-        where: {
-          RequesterId: friendsId,
-          RequestedId: +id,
-        },
+  static friendsRequestReject(req, res) {
+    const friendsId = req.params.id
+    const { id } = req.session.user
+
+    Friendship.destroy({
+      where: {
+        RequesterId: friendsId,
+        RequestedId: +id,
+      },
+    })
+      .then(() => {
+        res.redirect(`/profile/${friendsId}`)
       })
-        .then(() => {
-          res.redirect(`/profile/${friendsId}/friends/request`)
-        })
-        .catch((err) => {
-          res.status(500).send(err)
-        })
-    }
-
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+  }
 }
 
 module.exports = ProfileController

@@ -11,9 +11,38 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Friendship.belongsTo(models.User, { foreignKey: 'RequesterId' })
-      Friendship.belongsTo(models.User, { foreignKey: 'RequestedId' })
+      Friendship.belongsTo(models.User)
     }
+
+    static isMyFriend(userId, friendId) {
+      return new Promise((resolve, reject) => {
+        Friendship
+          .findOne({
+            where: {
+              RequesterId: userId,
+              RequestedId: friendId
+            },
+            attributes: ['isConfirmed']
+          })
+          .then(friendship => {
+            if(friendship) return resolve(friendship.isConfirmed? 'friend' : 'pending')
+            return Friendship
+              .findOne({
+                where: {
+                  RequesterId: friendId,
+                  RequestedId: userId
+                },
+                attributes: ['isConfirmed']
+              })
+          })
+          .then(friendship => {
+            if(friendship) return resolve(friendship.isConfirmed? 'friend' : 'need-accept')
+            return resolve(false)
+          })
+          .catch(err => reject(err))
+      })
+    }
+
   }
   Friendship.init({
     RequesterId: {
@@ -35,6 +64,7 @@ module.exports = (sequelize, DataTypes) => {
     isConfirmed: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
+      defaultValue: false
     }
   }, {
     sequelize,
@@ -47,15 +77,17 @@ module.exports = (sequelize, DataTypes) => {
               RequesterId: friendship.RequesterId,
               RequestedId: friendship.RequestedId,
             },
+            attributes: ['id']
           })
           .then(founded => {
             if(founded) return reject('Already exist')
-
+            
             return Friendship.findOne({
               where: {
                 RequesterId: friendship.RequestedId,
                 RequestedId: friendship.RequesterId,
               },
+              attributes: ['id']
             })
           })
           .then(founded => {
