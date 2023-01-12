@@ -4,7 +4,7 @@ const { Credential, User } = require('../models')
 class AuthController {
   static loginForm(req, res) {
     if(req.session.loggedIn) return res.redirect('/')
-    res.send('<form action="/login" method="POST"><input type="email" name="email"><input type="password" name="password"><button type="submit">Login</button></form>')
+    res.render('user/login')
   }
   
   static login(req, res) {
@@ -54,7 +54,7 @@ class AuthController {
   static registerForm(req, res) {
     if(req.session.loggedIn) return res.redirect('/')
 
-    res.send('register')
+    res.render('user/register')
   }
 
   static register(req, res) {

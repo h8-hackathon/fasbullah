@@ -1,6 +1,8 @@
 const express = require('express')
 const session = require('express-session')
 
+const router = require('./routes/index.routes')
+
 const app = express()
 const PORT = process.env.PORT || 3000
 
@@ -12,6 +14,8 @@ app.use(session({
     saveUninitialized: false,
     cookie: {secure: false, sameSite: true}
 }))
+
+app.use(router)
 
 app.get('/login', (req, res) => {
     res.render('user/login')

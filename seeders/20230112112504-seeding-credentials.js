@@ -17,7 +17,7 @@ module.exports = {
       {
         UserId: 1,
         email: 'test1@gmail.com',
-        password: '$2a$10$.X1OuSZzWbd03H81p2V66.hLxkvJZYBgYi3HuWy.4bFRK2zd6bIG6',
+        password: '$2a$10$.X1OuSZzWbd03H81p2V66.hLxkvJZYBgYi3HuWy.4bFRK2zd6bIG6', // 123
         role: 'User',
         createdAt: new Date(),
         updatedAt: new Date()

@@ -3,7 +3,7 @@ const { Op } = require('sequelize')
 
 class HomeController {
   static home(req, res) {
-    const { page } = req.query
+    const page = req.query.page || 0
     if (!req.session.loggedIn) {
       res.redirect('/login')
       return
@@ -21,8 +21,7 @@ class HomeController {
         [Op.or]: [{ RequesterId: id }, { RequestedId: id }],
       },
       attributes: ['RequesterId', 'RequestedId'],
-      offset,
-      limit,
+      
     })
       .then((friendships) => {
         
@@ -40,12 +39,14 @@ class HomeController {
               [Op.in]: otherUserIds,
             },
           },
+          include: User,
           order: [['createdAt', 'DESC']],
-          li
+          offset,
+          limit,
         })
       })
       .then((posts) => {
-        res.send({ user, role, posts })
+        res.render('post/post', { user, role, posts })
       })
       .catch((err) => {
         console.log(err)
