@@ -62,6 +62,9 @@ class PostController {
     })
       .then((post) => {
         res.send(post)
+        
+        post.increment('views')
+        post.save()
       })
       .catch((err) => {
         res.status(500).send(err)
