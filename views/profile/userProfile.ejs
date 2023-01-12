@@ -8,44 +8,84 @@
 <hr>
 <div class="mt-3 mb-3">
     <center>
-        <div class="mt-3">
-            <img src="..." class="img-fluid" alt="...">
-        </div>
+          <div class="col-md-4 mt-4">
+            <div class="card" style="width: 24rem;">
+                <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-top" alt="...">
+                </div>
+              </div>
     </center>
 
     <div class="mt-3">
         <label for="username">UserName</label> <br>
-        <img src="..." class="img-thumbnail" alt="..."> <br>
+        <div class="card" style="width: 10rem;">
+          <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="rounded-circle" alt="...">
+          </div>
         <div>
             <label for="bio">Bio</label>
             <textarea name="bio" id="bio" class="form-control" cols="30" rows="5"> </textarea>
         </div>
     </div>
     <br>
+    <div class="row">
+      <div class="col-md-4 mt-4">
+        <div class="card" style="width: 24rem;">
+            <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">Coding Yaar</h5>
+              <p class="card-text">Buat comment</p>
+              <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-profile" alt="...">
+              <a href="#" class="btn btn-primary">Name User</a>
+              <a href="/profile/:id/edit" class="btn btn-primary">Edit</a>
+            </div>
+          </div>
+    </div>
+    <div class="col-md-4 mt-4">
+      <div class="card" style="width: 24rem;">
+          <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Coding Yaar</h5>
+            <p class="card-text">Buat comment</p>
+            <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-profile" alt="...">
+            <a href="#" class="btn btn-primary">Name User</a>
+            <a href="/profile/:id/edit" class="btn btn-primary">Edit</a>
+          </div>
+        </div>
+  </div>
+    </div>
     <center>
-            <div class="col-md-16">
-                <div class="card" style="width: 18rem;">
-                    <img src="..." class="img-thumbnail" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">POST 1</p>
-                    </div>
-                  </div>
-            </div>
-            <br>
-            
-            <div class="col-md-16">
-                <div class="card" style="width: 18rem;">
-                    <img src="..." class="img-thumbnail" alt="...">
-                    <div class="card-body">
-                      <p class="card-text">POST 2</p>
-                    </div>
-                  </div>
-            </div>
-    </center>
-    <div class="btn-group">
-        <a href="/" class="btn btn-primary active" aria-current="page">Edit User</a>
-      </div>
 </div>
 <%- include('../partials/footer') %> 
 </body>
+<style>
+  body {
+  margin: 3em;
+}
+.card-img-profile {
+  width: 60%;
+  border-radius: 50%;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-img- {
+  width: 60%;
+  border-radius: 50%;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.card {
+  padding: 1.5em 0.5em 0.5em;
+  text-align: center;
+  border-radius: 2em;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+.card-title {
+  font-weight: bold;
+  font-size: 1.5em;
+}
+.btn-primary {
+  border-radius: 2em;
+  padding: 0.5em 1.5em;
+}
+</style>
 </html>
