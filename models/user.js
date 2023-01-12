@@ -2,6 +2,8 @@
 const {
   Model
 } = require('sequelize');
+const bcrypt = require('bcryptjs')
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -18,13 +20,42 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: 'Name cannot be empty'
+        }
+      }
+    },
     profilePicture: DataTypes.STRING,
     coverPhoto: DataTypes.STRING,
     bio: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'User',
+    hooks: {
+      beforeCreate(user) {
+        if(!user.profilePicture) {
+          user.profilePicture = 'https://i.postimg.cc/4yw2JvYm/default-propic.jpg'
+        }
+        if(!user.coverPhoto) {
+          user.coverPhoto = 'https://i.postimg.cc/nVkns67Q/giga-1.jpg'
+        }
+
+        return bcrypt.genSalt(10)
+          .then(salt => {
+            return bcrypt.hash(user.password, salt);
+          })
+          .then(hashPassword => {
+            user.password = hashPassword;
+          })
+          .catch(e => {
+            console.log(e);
+          });
+      }
+    }
   });
   return User;
 };

@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   PostTags.init({
     PostId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: 'Posts',
         key: 'id'
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     TagId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: 'Tags',
         key: 'id'
