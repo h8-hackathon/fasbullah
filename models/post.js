@@ -40,7 +40,13 @@ module.exports = (sequelize, DataTypes) => {
     imageURL: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    views: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
     }
+    
   }, {
     sequelize,
     modelName: 'Post',
