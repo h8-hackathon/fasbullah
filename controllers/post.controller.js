@@ -1,5 +1,5 @@
 const { tagsGetter } = require('../helpers')
-const { Post, Tag, PostTags } = require('../models')
+const { Post, Tag, PostTags, Comment } = require('../models')
 
 class PostController {
   static toHome(req, res) {
@@ -11,8 +11,8 @@ class PostController {
   }
 
   static newPost(req, res) {
-    const { UserId } = req.session
-    if (!UserId) {
+    
+    if (!req.session.loggedIn) {
       res.redirect(401, '/login?error=Unauthorized')
       return
     }
@@ -23,7 +23,7 @@ class PostController {
     Post.create({
       post,
       imageURL,
-      UserId,
+      UserId: req.session.user.id,
     })
       .then((result) => {
         data = result
@@ -51,6 +51,7 @@ class PostController {
         res.redirect(`/post/${data.id}`)
       })
       .catch((err) => {
+        console.log(err)
         res.status(500).send(err)
       })
   }

@@ -5,6 +5,7 @@ const router = Router()
 
 router.get('/', PostController.toHome)
 router.get('/new', PostController.newPostForm)
+router.post('/new', PostController.newPost)
 
 router.get('/:id', PostController.postDetail)
 router.post('/:id', PostController.postComment) // post a comment

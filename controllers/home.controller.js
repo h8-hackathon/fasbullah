@@ -35,7 +35,7 @@ class HomeController {
           }
         })
         
-        return Post.getTimeLinePosts(otherUserIds, offset, limit)
+        return Post.getTimeLinePosts(otherUserIds, offset, limit, User)
       })
       .then((posts) => {
         res.render('post/post', { user, role, posts })
