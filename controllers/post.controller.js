@@ -86,7 +86,24 @@ class PostController {
       .catch((err) => {
         res.status(500).send(err)
       })
+  }
 
+  static postComment(req, res) {
+    const { id } = req.params
+    const { comment } = req.body
+    const { UserId } = req.session
+
+    Comment.create({
+      comment,
+      PostId: id,
+      UserId,
+    })
+      .then(() => {
+        res.redirect(`/post/${id}`)
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
   }
 }
 
