@@ -1,7 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
+const bcrypt = require('bcryptjs')
+
 module.exports = (sequelize, DataTypes) => {
   class Credential extends Model {
     /**
@@ -14,45 +14,54 @@ module.exports = (sequelize, DataTypes) => {
       Credential.belongsTo(models.User)
     }
   }
-  Credential.init({
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id'
-      }
+  Credential.init(
+    {
+      UserId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+      },
+      email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true,
+        validate: {
+          isEmail: {
+            msg: 'Email format is wrong',
+          },
+        },
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      role: {
+        type: DataTypes.STRING,
+      },
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: {
-          msg: 'Email format is wrong'
-        }
-      }
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    role: {
-      type: DataTypes.STRING,
-      allowNull: false
+    {
+      sequelize,
+      modelName: 'Credential',
+      hooks: {
+        async beforeCreate(creds) {
+          try {
+            const salt = await bcrypt.genSalt(10)
+            const hashPassword = await bcrypt.hash(creds.password, salt)
+            creds.password = hashPassword
+            if (creds.email.split('@')[1] === 'fasbullah.com') {
+              creds.role = 'Admin'
+            } else {
+              creds.role = 'User'
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        },
+      },
     }
-  }, {
-    sequelize,
-    modelName: 'Credential',
-    hooks: {
-      beforeCreate(creds) {
-        if(creds.email.split('@')[1] === 'fasbullah.com') {
-          creds.role = 'Admin'
-          return
-        }
-        creds.role = 'User'
-      }
-    }
-  });
-  return Credential;
-};
+  )
+  return Credential
+}

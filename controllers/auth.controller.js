@@ -1,10 +1,10 @@
 const { isValidPassword } = require('../helpers')
-const { Credential } = require('../models')
+const { Credential, User } = require('../models')
 
 class AuthController {
   static loginForm(req, res) {
     if(req.session.loggedIn) return res.redirect('/')
-    res.send('Login')
+    res.send('<form action="/login" method="POST"><input type="email" name="email"><input type="password" name="password"><button type="submit">Login</button></form>')
   }
   
   static login(req, res) {
@@ -31,7 +31,7 @@ class AuthController {
         
     })
     .then((valid) => {
-      if (!valid) throw new Error({
+      if (!valid) throw ({
         name: 'validationError',
         errors: [{ message: `Your password is not match, please check again` }],
       })
@@ -46,6 +46,7 @@ class AuthController {
         res.redirect(401, '/login?errors=' + err.errors.map(({message}) => message))
         return
       }
+      console.log(err)
       res.status(500).send(err)
     })
   }

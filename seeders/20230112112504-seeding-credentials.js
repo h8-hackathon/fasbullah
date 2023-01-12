@@ -2,7 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  up (queryInterface, Sequelize) {
     /**
      * Add seed commands here.
      *
@@ -13,11 +13,11 @@ module.exports = {
      * }], {});
     */
     
-    await queryInterface.bulkInsert('Credentials', [
+    return queryInterface.bulkInsert('Credentials', [
       {
         UserId: 1,
         email: 'test1@gmail.com',
-        password: 'password',
+        password: '$2a$10$.X1OuSZzWbd03H81p2V66.hLxkvJZYBgYi3HuWy.4bFRK2zd6bIG6',
         role: 'User',
         createdAt: new Date(),
         updatedAt: new Date()
@@ -25,7 +25,7 @@ module.exports = {
       {
         UserId: 2,
         email: 'test2@gmail.com',
-        password: 'password',
+        password: '$2a$10$.X1OuSZzWbd03H81p2V66.hLxkvJZYBgYi3HuWy.4bFRK2zd6bIG6',
         role: 'User',
         createdAt: new Date(),
         updatedAt: new Date()
@@ -33,7 +33,7 @@ module.exports = {
       {
         UserId: 3,
         email: 'test3@gmail.com',
-        password: 'password',
+        password: '$2a$10$.X1OuSZzWbd03H81p2V66.hLxkvJZYBgYi3HuWy.4bFRK2zd6bIG6',
         role: 'User',
         createdAt: new Date(),
         updatedAt: new Date()
@@ -41,7 +41,7 @@ module.exports = {
     ], {})
   },
 
-  async down (queryInterface, Sequelize) {
+  down (queryInterface, Sequelize) {
     /**
      * Add commands to revert seed here.
      *
@@ -49,6 +49,6 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete('Credentials', null, {})
+    return queryInterface.bulkDelete('Credentials', null, {})
   }
 };

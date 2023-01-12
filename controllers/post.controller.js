@@ -22,8 +22,40 @@ class PostController {
       imageURL,
       UserId
     })
+    .then(post => {
+      res.redirect(`/post/${post.id}`)
+    })
+    .catch(err => {
+      res.status(500).send(err)
+    })
 
   }
+
+  static postDetail(req, res) {
+    const { id } = req.params
+    Post.findByPk(id, {
+      include: Comment
+    })
+    .then(post => {
+      res.send(post)
+    })
+    .catch(err => {
+      res.status(500).send(err)
+    })
+  }
+
+
+  static postEditForm(req, res) {
+    res.send('edit post form')
+  }
+
+  static postEdit(req, res) {
+    res.send('edit post')
+  }
+
+
+
+  
 }
 
 module.exports = PostController
