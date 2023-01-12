@@ -30,7 +30,16 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
-    comment: DataTypes.TEXT
+    comment: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        len: {
+          args: [1, 1000],
+          msg: 'Comment length can only be between 1-1000 character'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Comment',

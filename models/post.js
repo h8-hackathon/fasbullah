@@ -24,8 +24,23 @@ module.exports = (sequelize, DataTypes) => {
         key: 'id'
       }
     },
-    post: DataTypes.TEXT,
-    imageURL: DataTypes.STRING
+    post: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      validate: {
+        len: {
+          args: [1, 1000],
+          msg: 'Post can only be between 1 - 1000'
+        },
+        notEmpty: {
+          msg: 'Post cannot be empty'
+        },
+      }
+    },
+    imageURL: {
+      type: DataTypes.STRING,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'Post',

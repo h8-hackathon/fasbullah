@@ -17,17 +17,42 @@ module.exports = (sequelize, DataTypes) => {
   Credential.init({
     UserId: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: 'Users',
         key: 'id'
       }
     },
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role: DataTypes.STRING
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        isEmail: {
+          msg: 'Email format is wrong'
+        }
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   }, {
     sequelize,
     modelName: 'Credential',
+    hooks: {
+      beforeCreate(creds) {
+        if(creds.email.split('@')[1] === 'fasbullah.com') {
+          creds.role = 'Admin'
+          return
+        }
+        creds.role = 'User'
+      }
+    }
   });
   return Credential;
 };
