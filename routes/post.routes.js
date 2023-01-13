@@ -17,6 +17,6 @@ router.post('/:id', PostController.postComment)
 router.get('/:id/edit', PostController.postEditForm)
 router.post('/:id/edit', PostController.postEdit)
 
-router.post('/:id/delete', PostController.postEdit)
+router.get('/:id/delete', PostController.delete)
 
 module.exports = router

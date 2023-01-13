@@ -53,6 +53,9 @@
             <div style="display: flex; gap: 5px; padding: 5px">
               <span><%= tag.views %> views</span
               ><a href="/post/<%= tag.id %>">Lihat post </a>
+              <% if(role && role === 'Admin') { %>
+                <a href="/post/<%= post.id %>/delete">Hapus post </a>
+              <%}%> 
             </div>
           </div>
         </div>

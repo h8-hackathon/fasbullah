@@ -113,6 +113,18 @@ class PostController {
         res.status(500).send(err)
       })
   }
+
+  static delete(req, res) {
+    const { id } = req.params
+
+    Post.destroy({ where: { id } })
+      .then(() => {
+        res.redirect('/')
+      })
+      .catch((err) => {
+        res.status(500).send(err)
+      })
+  }
 }
 
 module.exports = PostController
