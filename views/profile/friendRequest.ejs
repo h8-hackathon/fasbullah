@@ -2,9 +2,10 @@
 <html lang="en">
 <%- include('../partials/header', {title: "Profile"}) %> 
 <body>
-<%- include('../partials/navbar', { user: currentUser }) %> 
+<%- include('../partials/navbar', { user }) %> 
 <div class="container mt-3 mb-3">
-<center><h3>Search Result</h3></center>
+<center><h3>Friend Request</h3></center>
+<a href="/profile/<%= user.id %>/friends">Lihat friend list</a>
 <hr>
 <div class="mt-3 mb-3 d-flex flex-wrap">
   <% users.forEach(user => { %>
@@ -15,7 +16,8 @@
     <div class="card-body">
       <h5 class="card-title"><%= user.name %></h5>
       <p class="card-text"><%= user.bio %></p>
-      <a href="/profile/<%= user.id %>" class="btn btn-primary">View Profile</a>
+      <a href="/profile/<%= user.id %>/accept" class="btn btn-primary">Accept</a>
+      <a href="/profile/<%= user.id %>/reject" class="btn btn-primary">Reject</a>
     </div>
     </div>
   <% }) %>

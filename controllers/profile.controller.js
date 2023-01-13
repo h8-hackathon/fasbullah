@@ -30,7 +30,7 @@ class ProfileController {
     const self = req.session.user.id == id
     let data = {}
     User.findByPk(id, {
-      include: Post,
+      include: { model: Post, separate: true, order: [['createdAt', 'DESC']]},
     })
       .then((user) => {
         if (self)
@@ -58,14 +58,14 @@ class ProfileController {
   static profileEditForm(req, res) {
     const { id } = req.params
 
-    if (id !== req.session.user.id) {
+    if (+id !== req.session.user.id) {
       res.redirect(401, '/profile/' + id)
       return
     }
 
     User.findByPk(id)
       .then((user) => {
-        res.send(user)
+        res.render('profile/edit-form',{user})
       })
       .catch((err) => {
         res.status(500).send(err)
@@ -74,12 +74,21 @@ class ProfileController {
 
   static profileEdit(req, res) {
     const { id } = req.params
-    if (id !== req.session.user.id) {
+    if (+id !== req.session.user.id) {
       res.redirect(401, '/profile/' + id)
       return
     }
-    const { name, profilePicture, coverPhoto, bio } = req.body
-    User.update({ name, profilePicture, coverPhoto, bio }, { where: { id } })
+    console.log(req.files)
+    const { name, bio } = req.body
+    User.upload(req.files)
+      .then((result) => {
+        let updateData = { name, bio }
+        if(result) {
+          updateData = { ...updateData, ...result }
+        }
+
+        return User.update(updateData, { where: { id } })
+      })
       .then(() => {
         res.redirect(`/profile/${id}`)
       })
@@ -90,6 +99,8 @@ class ProfileController {
 
   static friends(req, res) {
     const { id } = req.params
+    const { user } = req.session
+
     Friendship.findAll({
       where: {
         [Op.or]: [{ RequesterId: id }, { RequestedId: id }],
@@ -114,8 +125,8 @@ class ProfileController {
           },
         })
       })
-      .then((friends) => {
-        res.send(friends)
+      .then((users) => {
+        res.render('profile/friendList', { user, users })
       })
       .catch((err) => {
         console.log(err)
@@ -129,6 +140,8 @@ class ProfileController {
       res.redirect(401, '/profile/' + id)
       return
     }
+
+    const { user } = req.session
 
     Friendship.findAll({
       where: {
@@ -154,8 +167,8 @@ class ProfileController {
           },
         })
       })
-      .then((friends) => {
-        res.send(friends)
+      .then((users) => {
+        res.render('profile/friendRequest', { user, users })
       })
       .catch((err) => {
         console.log(err)

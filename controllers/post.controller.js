@@ -1,3 +1,4 @@
+const { imgbox } = require('imgbox')
 const { tagsGetter } = require('../helpers')
 const { Post, Tag, PostTags, Comment } = require('../models')
 
@@ -7,7 +8,8 @@ class PostController {
   }
 
   static newPostForm(req, res) {
-    res.render('post/form-add')
+    const { user } = req.session
+    res.render('post/form-add', { user })
   }
 
   static newPost(req, res) {
@@ -17,13 +19,16 @@ class PostController {
       return
     }
 
-    const { post, imageURL } = req.body
+    const { post } = req.body
     let data = {}
-
-    Post.create({
-      post,
-      imageURL,
-      UserId: req.session.user.id,
+    
+    Post.uploadImage(req.file)
+    .then((imageURL) => {
+      return Post.create({
+        post,
+        imageURL,
+        UserId: req.session.user.id,
+      })
     })
       .then((result) => {
         data = result

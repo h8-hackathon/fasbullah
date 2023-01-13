@@ -2,9 +2,10 @@
 <html lang="en">
 <%- include('../partials/header', {title: "Profile"}) %> 
 <body>
-<%- include('../partials/navbar', { user: currentUser }) %> 
+<%- include('../partials/navbar', { user }) %> 
 <div class="container mt-3 mb-3">
-<center><h3>Search Result</h3></center>
+<center><h3>Friend List</h3></center>
+<a href="/profile/<%= user.id %>/friends/request">Lihat friend request</a>
 <hr>
 <div class="mt-3 mb-3 d-flex flex-wrap">
   <% users.forEach(user => { %>
