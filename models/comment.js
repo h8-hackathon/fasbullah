@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
     getTimeSince() {
       return timeSince(this.createdAt)
     }
+
+    get formatedComment() {
+      return this.comment.replace(/#(\S+)/g, '<a href="/tags/$1">#$1</a>')
+    }
   }
   Comment.init({
     PostId: {
