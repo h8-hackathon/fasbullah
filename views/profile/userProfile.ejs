@@ -17,8 +17,9 @@
         <img src="<%= user.profilePicture %>" class="rounded-circle" alt="...">
         <label for="username"><%= user.name %></label> <br>
         <% if(self) { %>
-
-          <button class="btn">Edit Profile</button>
+          <a href="/profile/<%= user.id %>/edit">
+            <button class="btn">Edit Profile</button>
+          </a>
         <%} else if(status === 'need-accept') { %>
           <a href="/profile/<%= user.id %>/accept">
             <button class="btn">accept friend request</button>
@@ -64,11 +65,11 @@
                   <div style="padding-left: 10px;"><%= post.timeSincePost %> ago</div>
                 </div>
               </div>
+              
               <div style="padding: 10px;">
   
-                <a href="/post/<%= post.id %>">
-                  <p style="display: flex; white-space: pre-wrap;"><%= post.post %></p>
-                  <% if(post.imageURL) { %>
+                <p style="display: flex; white-space: pre-wrap;"><%= post.post %></p>
+                <% if(post.imageURL) { %>
                     <div class="card" style="width: 22rem">
                       <img
                       src="<%= post.imageURL %>"
@@ -76,10 +77,13 @@
                       alt="..."
                       />
                     </div>
-                  </a>
+                  </div>
+                  <% } %>
+                
+                <div style="display:flex; gap: 5px; padding: 5px;">
+                  <span><%= post.views %> views</span><a href="/post/<%= post.id %>">Lihat post </a>
                 </div>
-              <% } %>
-            </div>
+              </div>
           </div>
           <% }) %>
       </center>

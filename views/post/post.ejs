@@ -8,41 +8,44 @@
     <div class="col">
       <center>
         <% posts.forEach(post => { %>
-        <div class="col-md-4 mt-4">
-          <div class="card" style="width: 43rem">
-            <div
-              class="card-body"
-              style="display: flex; padding: 0 0; margin-bottom: 30px; gap: 5px; padding-left: 10px;"
-            >
-              <img
-                src="<%= post.User.profilePicture %>"
-                alt="..."
-                style="width: 40px; border-radius: 100%;"
-              />
-              <div>
-                <a href="/profile/<%= post.User.id %>">
-                  <span><%= post.User.name %></span>
-                </a>
-                <div style="padding-left: 10px;"><%= post.timeSincePost %> ago</div>
+          <div class="col-md-4 mt-4">
+            <div class="card" style="width: 43rem">
+              <div
+                class="card-body"
+                style="display: flex; padding: 0 0; margin-bottom: 30px; gap: 5px; padding-left: 10px;"
+              >
+                <img
+                  src="<%= post.User.profilePicture %>"
+                  alt="..."
+                  style="width: 40px; border-radius: 100%;"
+                />
+                <div>
+                  <a href="/profile/<%= user.id %>">
+                    <span><%= post.User.name %></span>
+                  </a>
+                  <div style="padding-left: 10px;"><%= post.timeSincePost %> ago</div>
+                </div>
               </div>
-            </div>
-            <div style="padding: 10px;">
-
-              <a href="/post/<%= post.id %>">
+              
+              <div style="padding: 10px;">
+  
                 <p style="display: flex; white-space: pre-wrap;"><%= post.post %></p>
                 <% if(post.imageURL) { %>
-                  <div class="card" style="width: 22rem">
-                    <img
-                    src="<%= post.imageURL %>"
-                    class="card-img-bottom"
-                    alt="..."
-                    />
+                    <div class="card" style="width: 22rem">
+                      <img
+                      src="<%= post.imageURL %>"
+                      class="card-img-bottom"
+                      alt="..."
+                      />
+                    </div>
                   </div>
-                </a>
+                  <% } %>
+                
+                <div style="display:flex; gap: 5px; padding: 5px;">
+                  <span><%= post.views %> views</span><a href="/post/<%= post.id %>">Lihat post </a>
+                </div>
               </div>
-            <% } %>
           </div>
-        </div>
         <% }) %>
       </center>
     </div>

@@ -26,14 +26,14 @@
             Form Add Post
         </div>
         <div class="card-body">
-            <form action="" method="post">
+            <form action="" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="" class="form-label">Post</label>
                     <textarea name="post" id="" cols="10" rows="10" class="form-control"></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Image</label>
-                    <input type="file" class="form-control" id="-" value="" >
+                    <input type="file" class="form-control" accept="image/*" id="-" value="" name="image">
                 </div>
                 <button type="submit" class="btn btn-outline-primary">Submit</button>
             </form>

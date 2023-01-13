@@ -11,26 +11,27 @@
                 Form Update
             </div>
             <div class="card-body">
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" autocomplete="off" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label" for="name">Name</label>
-                        <input class="form-control" type="text" id="name" name="name" value="">
+                        <input class="form-control" type="text" id="name" name="name" value="<%= user.name %>">
                     </div>
                     <div class="mb-3">
+                        <img width="30%" src="<%= user.profilePicture %>" alt="">
                         <label class="form-label" for="stock">Profile Picture</label>
-                        <input class="form-control" type="file" id="stock" name="stock" value="">
+                        <input class="form-control" type="file" id="stock" name="profile" accept="image/*" value="">
                     </div>
                     <div class="mb-3">
+                        <img width="100%" src="<%= user.coverPhoto %>" alt="">
                         <label class="form-label" for="stock">Cover Photo</label>
-                        <input class="form-control" type="file" id="stock" name="stock" value="">
+                        <input class="form-control" type="file" id="stock" name="cover" accept="image/*" value="">
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="bio">Bio</label>
-                        <input class="form-control" type="text" id="bio" name="bio" value=""
-                        >
+                        <textarea name="bio" class="form-control" id="" cols="30" rows="10"><%= user.name %></textarea>
                     </div>
     
-                    <button class="btn btn-outline-primary">submit</button>
+                    <button class="btn btn-outline-primary">Save Changes</button>
                 </form>
             </div>
         </div>
