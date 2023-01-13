@@ -1,61 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-    <%- include('../partials/header', { title: "Post"}) %> 
-<body>
-    <%- include('../partials/navbar', { user }) %> 
-    <center><h3>Tags</h3></center>
-    <hr>
+  <%- include('../partials/header', { title: "Post"}) %>
+  <body>
+    <%- include('../partials/navbar', { user }) %>
+    <center><h3>Tags: "<%= tags.name %>"</h3></center>
+    <hr />
     <div class="col">
-        <center>
-                <div class="col-md-4 mt-4">
-                  <div class="card" style="width: 23rem">
-                    <div class="card-body">
-                        <img src="" class="card-img-profile" alt="..." style="width: 50px">
-                        <a href="">
-                            <span></span>
-                        </a>
-                      <p class=""></p>
-                    </div>
-                        <div class="card" style="width: 22rem">
-                            <img src="" class="card-img-bottom" alt="...">
-                        </div>
-                  </div>
+      <center>
+        <% tags.Posts.forEach(tag => { %>
+        <div class="col-md-4 mt-4">
+          <div class="card" style="width: 43rem">
+            <div
+              class="card-body"
+              style="
+                display: flex;
+                padding: 0 0;
+                margin-bottom: 30px;
+                gap: 5px;
+                padding-left: 10px;
+              "
+            >
+              <img
+                src="<%= tag.User.profilePicture %>"
+                alt="..."
+                style="width: 40px; border-radius: 100%"
+              />
+              <div>
+                <a href="/profile/<%= user.id %>">
+                  <span><%= tag.User.name %></span>
+                </a>
+                <div style="padding-left: 10px">
+                  <%= tag.timeSincePost %> ago
                 </div>
-             
-        </center>
-    </div>
-<%- include('../partials/footer') %> 
-</body>
-<style>
-    body {
-  margin: 3em;
-}
-.card-img-profile {
-  width: 60%;
-  border-radius: 50%;
-  margin: 0 auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
+              </div>
+            </div>
 
-.card-img- {
-  width: 60%;
-  border-radius: 50%;
-  margin: 0 auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-.card {
-  padding: 1.5em 0.5em 0.5em;
-  text-align: center;
-  border-radius: 2em;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-}
-.card-title {
-  font-weight: bold;
-  font-size: 1.5em;
-}
-.btn-primary {
-  border-radius: 2em;
-  padding: 0.5em 1.5em;
-}
-</style>
+            <div style="padding: 10px">
+              <p style="white-space: pre-wrap; text-align: left">
+                <%- tag.formatedPost %>
+              </p>
+              <% if(tag.imageURL) { %>
+              <div class="card" style="width: 22rem">
+                <img
+                  src="<%= tag.imageURL %>"
+                  class="card-img-bottom"
+                  alt="..."
+                />
+              </div>
+            </div>
+            <% } %>
+
+            <div style="display: flex; gap: 5px; padding: 5px">
+              <span><%= tag.views %> views</span
+              ><a href="/post/<%= tag.id %>">Lihat post </a>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </center>
+    </div>
+
+    <%- include('../partials/footer') %>
+  </body>
+  <style>
+    body {
+      margin: 3em;
+    }
+    .card-img-profile {
+      width: 60%;
+      border-radius: 50%;
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .card-img- {
+      width: 60%;
+      border-radius: 50%;
+      margin: 0 auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .card {
+      padding: 1.5em 0.5em 0.5em;
+      text-align: center;
+      border-radius: 2em;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+    .card-title {
+      font-weight: bold;
+      font-size: 1.5em;
+    }
+    .btn-primary {
+      border-radius: 2em;
+      padding: 0.5em 1.5em;
+    }
+  </style>
 </html>

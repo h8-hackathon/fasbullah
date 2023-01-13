@@ -35,8 +35,8 @@ class PostController {
 
         // making tags
         const tags = tagsGetter(post)
-        const tagsPromise = tags.map((tag) => {
-          return Tag.findOrCreate({ where: { tag } })
+        const tagsPromise = tags.map((name) => {
+          return Tag.findOrCreate({ where: { name } })
         })
 
         return Promise.all(tagsPromise)

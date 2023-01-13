@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       return timeSince(this.createdAt)
     }
 
+    get formatedPost() {
+      return this.post.replace(/#(\S+)/g, '<a href="/tags/$1">#$1</a>')
+    }
+
     static getTimeLinePosts(otherUserIds, offset, limit, User) {
       return this.findAll({
         where: {

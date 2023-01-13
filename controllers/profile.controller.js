@@ -33,12 +33,7 @@ class ProfileController {
       include: { model: Post, separate: true, order: [['createdAt', 'DESC']]},
     })
       .then((user) => {
-        if (self)
-          return res.render('profile/userProfile', {
-            user,
-            currentUser: req.session.user,
-            self,
-          })
+        
         data = user
         return Friendship.isMyFriend(req.session.user.id, id)
       })
