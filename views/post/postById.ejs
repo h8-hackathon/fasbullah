@@ -87,7 +87,11 @@
                 </div>
                 <% }) %>
 
-                <!-- make form to add comment -->
+                <% if(errors) { %>
+                  <% errors.split(',').forEach(err => { %>
+                      <p style="color: red;"><%= err %></p>
+                  <% }) %> 
+                <% } %> 
                 <form action="" method="POST">
                   <div class="form-group">
                     <textarea

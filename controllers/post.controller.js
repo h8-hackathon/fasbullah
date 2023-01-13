@@ -8,8 +8,9 @@ class PostController {
   }
 
   static newPostForm(req, res) {
+    const { errors } = req.query
     const { user } = req.session
-    res.render('post/form-add', { user })
+    res.render('post/form-add', { user, errors })
   }
 
   static newPost(req, res) {
@@ -55,19 +56,24 @@ class PostController {
         res.redirect(`/post/${data.id}`)
       })
       .catch((err) => {
-        console.log(err)
+        if(err.name) {
+          const errors = err.errors.map(({message}) => message)
+          res.redirect(`/post/new?errors=${errors}`)
+          return
+        }
         res.status(500).send(err)
       })
   }
 
   static postDetail(req, res) {
+    const { errors } = req.query
     const { id } = req.params
     const { user } = req.session
     Post.findByPk(id, {
       include: [{model: Comment, include: User}, User],
     })
       .then((post) => {
-        res.render('post/postById', { post, user })
+        res.render('post/postById', { post, user, errors })
 
         post.increment('views')
         post.save()
@@ -110,6 +116,10 @@ class PostController {
         res.redirect(`/post/${id}`)
       })
       .catch((err) => {
+        if(err.name && err.errors) {
+          res.redirect(`/post/${id}?errors=${err.errors.map(({message}) => message)}`)
+          return
+        }
         res.status(500).send(err)
       })
   }

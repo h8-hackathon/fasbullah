@@ -82,7 +82,7 @@
                   
                   <div style="display:flex; gap: 5px; padding: 5px;">
                     <span><%= post.views %> views</span><a href="/post/<%= post.id %>">Lihat post </a>
-                    <% if(self || (role && role === 'Admin')) { %>
+                    <% if(self) { %>
                       <a href="/post/<%= post.id %>/delete">Hapus post </a>
                     <%}%> 
                   </div>

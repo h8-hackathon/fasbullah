@@ -6,14 +6,14 @@ class TagController {
   }
 
   static getTags(req, res) {
-    const { user } = req.session
+    const { user, role } = req.session
     Tag.findOne({
       where: {
         name: req.params.tags,
       },
       include: { model: Post, include: User },
     }).then((tags) => {
-      res.render('profile/tags', { tags, user })
+      res.render('profile/tags', { tags, user, role })
     })
   }
 }
