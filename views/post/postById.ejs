@@ -3,33 +3,109 @@
     <%- include('../partials/header', { title: "Post"}) %> 
 <body>
     <%- include('../partials/navbar', { user }) %> 
-        <div class="row">
-            <div class="col-md-4 mt-4">
-                <div class="card" style="width: 24rem;">
-                    <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Coding Yaar</h5>
-                      <p class="card-text">Buat comment</p>
-                      <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-profile" alt="...">
-                      <a href="#" class="btn btn-primary">Name User</a>
-                      <a href="#" class="btn btn-primary">Comment</a>
-                      <a href="/profile/:id/edit" class="btn btn-primary">Edit</a>
+      <center><h3>Post: "<%= post.id %>"</h3></center>
+      <hr />
+      <div class="col">
+        <center>
+          <div class="col-md-4 mt-4">
+            <div class="card" style="width: 43rem">
+              <div
+                class="card-body"
+                style="
+                  display: flex;
+                  padding: 0 0;
+                  margin-bottom: 30px;
+                  gap: 5px;
+                  padding-left: 10px;
+                "
+              >
+                <img
+                  src="<%= post.User.profilePicture %>"
+                  alt="..."
+                  style="width: 40px; border-radius: 100%"
+                />
+                <div>
+                  <a href="/profile/<%= user.id %>">
+                    <span><%= post.User.name %></span>
+                  </a>
+                  <div style="padding-left: 10px">
+                    <%= post.timeSincePost %> ago
+                  </div>
+                </div>
+              </div>
+              <div style="padding: 10px">
+                <p style="white-space: pre-wrap; text-align: left"><%- post.formatedPost %></p>
+                <% if(post.imageURL) { %>
+                <div class="card" style="width: 22rem">
+                  <img
+                    src="<%= post.imageURL %>"
+                    class="card-img-bottom"
+                    alt="..."
+                  />
+                </div>
+              </div>
+              <% } %>
+              
+            </div>
+            <!-- show post.Comments -->
+            <div class="card" style="width: 43rem">
+              <div class="card-body">
+                <h5 class="card-title">Comments</h5>
+                <hr />
+                <% post.Comments.forEach(comment => { %>
+                <div
+                  class="card"
+                  style="width: 40rem; margin-bottom: 10px"
+                >
+                  <div
+                    class="card-body"
+                    style="
+                      display: flex;
+                      padding: 0 0;
+                      margin-bottom: 30px;
+                      gap: 5px;
+                      padding-left: 10px;
+                    "
+                  >
+                    <img
+                      src="<%= comment.User.profilePicture %>"
+                      alt="..."
+                      style="width: 40px; border-radius: 100%"
+                    />
+                    <div>
+                      <a href="/profile/<%= comment.User.id %>">
+                        <span><%= comment.User.name %></span>
+                      </a>
+                      <div style="padding-left: 10px">
+                        <%= comment.getTimeSince() %> ago
+                      </div>
                     </div>
                   </div>
-            </div>
-            <div class="col-md-4 mt-4">
-                <div class="card" style="width: 24rem;">
-                    <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title">Coding Yaar</h5>
-                      <p class="card-text">Buat comment</p>
-                      <img src="https://codingyaar.com/wp-content/uploads/bootstrap-profile-card-image.jpg" class="card-img-profile" alt="...">
-                      <a href="#" class="btn btn-primary">Name User</a>
-                      <a href="#" class="btn btn-primary">Comment</a>
-                    </div>
+                  <div style="padding: 10px">
+                    <p style="white-space: pre-wrap; text-align: left"><%- comment.formatedComment %></p>
                   </div>
-            </div>
-        </div>
+                </div>
+                <% }) %>
+
+                <!-- make form to add comment -->
+                <form action="" method="POST">
+                  <div class="form-group">
+                    <textarea
+                      class="form-control"
+                      id="comment"
+                      name="comment"
+                      rows="3"
+                      placeholder="say something"
+                    ></textarea>
+
+                    <button type="submit" class="btn btn-primary mt-3">
+                      Submit
+                    </button>
+
+                    </div>
+              </div>
+          </div>
+      
         <%- include('../partials/footer') %> 
 </body>
 </html>
